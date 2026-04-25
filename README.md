@@ -6,12 +6,10 @@ Tested against **RF 7.4.2** on **Python 3.12** with **Hypothesis 6.152.2**.
 
 ## Bugs Found
 
-| Bug | Issue |
-|-----|-------|
-| `String.convert_to_title_case` / `replace_string_using_regexp` — bytes input leaks `UnicodeEncodeError` | [#5636](https://github.com/robotframework/robotframework/issues/5636) |
-| `String.convert_to_title_case` — invalid regex in `exclude` leaks `re.error` | [#5648](https://github.com/robotframework/robotframework/issues/5648) |
-| `Collections.get_index_from_list` — negative `start` collides with `-1` sentinel | [#5649](https://github.com/robotframework/robotframework/issues/5649) |
-| `TypeInfoParser.parse` — `\|` inside `[...]` causes `UnboundLocalError` or infinite loop | [#5650](https://github.com/robotframework/robotframework/issues/5650) |
+- [#5636](https://github.com/robotframework/robotframework/issues/5636) `String` — bytes input leaks `UnicodeEncodeError`
+- [#5648](https://github.com/robotframework/robotframework/issues/5648) `String` — invalid regex in `exclude` leaks raw `re.error`
+- [#5649](https://github.com/robotframework/robotframework/issues/5649) `Collections` — negative `start` collides with `-1` sentinel
+- [#5650](https://github.com/robotframework/robotframework/issues/5650) `TypeInfoParser` — `|` inside `[...]` causes crash or infinite loop
 
 ## Setup
 
