@@ -6,10 +6,12 @@ Tested against **RF 7.4.2** on **Python 3.12** with **Hypothesis 6.152.2**.
 
 ## Bugs Found
 
-- [#5636](https://github.com/robotframework/robotframework/issues/5636) `String` — bytes input leaks `UnicodeEncodeError`
-- [#5648](https://github.com/robotframework/robotframework/issues/5648) `String` — invalid regex in `exclude` leaks raw `re.error`
-- [#5649](https://github.com/robotframework/robotframework/issues/5649) `Collections` — negative `start` collides with `-1` sentinel
-- [#5650](https://github.com/robotframework/robotframework/issues/5650) `TypeInfoParser` — `|` inside `[...]` causes crash or infinite loop
+| Issue | Library | Description |
+|-------|---------|-------------|
+| [#5636](https://github.com/robotframework/robotframework/issues/5636) | `String` | Bytes input leaks `UnicodeEncodeError` |
+| [#5648](https://github.com/robotframework/robotframework/issues/5648) | `String` | Invalid regex in `exclude` leaks raw `re.error` |
+| [#5649](https://github.com/robotframework/robotframework/issues/5649) | `Collections` | Negative `start` collides with `-1` sentinel |
+| [#5650](https://github.com/robotframework/robotframework/issues/5650) | `TypeInfoParser` | `\|` inside `[...]` causes crash or infinite loop |
 
 ## Setup
 
