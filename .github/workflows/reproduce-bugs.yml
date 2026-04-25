@@ -1,0 +1,51 @@
+name: Reproduce Bugs
+
+on: [push, pull_request]
+
+jobs:
+  reproduce:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-latest]
+
+    env:
+      PYTHONUTF8: "1"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # ── Python reproduce scripts (print bug output, always exit 0) ──────────
+
+      - name: "[convert-to-title-case-invalid-exclude] Python"
+        run: python reproduce/reproduce_string_bugs.py
+
+      - name: "[get-index-from-list-negative-start] Python"
+        run: python reproduce/reproduce_collections_bugs.py
+
+      - name: "[typeinfoparser-pipe-in-params] Python"
+        run: python reproduce/reproduce_typeinfoparser_bug.py
+
+      # ── Robot reproduce files (expected to FAIL — bug is present) ───────────
+
+      - name: "[convert-to-title-case-invalid-exclude] Robot"
+        run: python -m robot reproduce/reproduce_string_bugs.robot
+        continue-on-error: true
+
+      - name: "[get-index-from-list-negative-start] Robot"
+        run: python -m robot reproduce/reproduce_collections_bugs.robot
+        continue-on-error: true
+
+      - name: "[typeinfoparser-pipe-in-params] Robot"
+        working-directory: reproduce
+        run: python -m robot reproduce_typeinfoparser_bug.robot
+        continue-on-error: true
