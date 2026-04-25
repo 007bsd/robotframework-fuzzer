@@ -41,4 +41,4 @@ cd reproduce && python -m robot reproduce_typeinfoparser_bug.robot
 
 ## CI
 
-`.github/workflows/reproduce-bugs.yml` runs all reproduce scripts on **Windows** and **Linux**.
+`.github/workflows/reproduce-bugs.yml` runs the fuzz harnesses and all reproduce scripts on **Windows** and **Linux**.

@@ -1,9 +1,9 @@
-name: Reproduce Bugs
+name: Fuzz and Reproduce
 
 on: [push, pull_request]
 
 jobs:
-  reproduce:
+  fuzz-and-reproduce:
     name: ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -24,28 +24,42 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
-      # ── Python reproduce scripts (print bug output, always exit 0) ──────────
+      # ── Fuzz harnesses (fail when bugs are found) ────────────────────────────
 
-      - name: "[convert-to-title-case-invalid-exclude] Python"
+      - name: "[fuzz] String library"
+        run: python fuzz/fuzz_string_library.py
+        continue-on-error: true
+
+      - name: "[fuzz] Collections library"
+        run: python fuzz/fuzz_collections_library.py
+        continue-on-error: true
+
+      - name: "[fuzz] TypeInfoParser"
+        run: python fuzz/fuzz_typeinfoparser.py
+        continue-on-error: true
+
+      # ── Python reproduce scripts (always exit 0) ─────────────────────────────
+
+      - name: "[reproduce] String bugs — Python"
         run: python reproduce/reproduce_string_bugs.py
 
-      - name: "[get-index-from-list-negative-start] Python"
+      - name: "[reproduce] Collections bugs — Python"
         run: python reproduce/reproduce_collections_bugs.py
 
-      - name: "[typeinfoparser-pipe-in-params] Python"
+      - name: "[reproduce] TypeInfoParser bug — Python"
         run: python reproduce/reproduce_typeinfoparser_bug.py
 
-      # ── Robot reproduce files (expected to FAIL — bug is present) ───────────
+      # ── Robot reproduce scripts ───────────────────────────────────────────────
 
-      - name: "[convert-to-title-case-invalid-exclude] Robot"
+      - name: "[reproduce] String bugs — Robot"
         run: python -m robot reproduce/reproduce_string_bugs.robot
         continue-on-error: true
 
-      - name: "[get-index-from-list-negative-start] Robot"
+      - name: "[reproduce] Collections bugs — Robot"
         run: python -m robot reproduce/reproduce_collections_bugs.robot
         continue-on-error: true
 
-      - name: "[typeinfoparser-pipe-in-params] Robot"
+      - name: "[reproduce] TypeInfoParser bug — Robot"
         working-directory: reproduce
         run: python -m robot reproduce_typeinfoparser_bug.robot
         continue-on-error: true
